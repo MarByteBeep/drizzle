@@ -13,7 +13,7 @@ bun install
 ## Create database
 
 ```bash
-bun run init
+bun run create_db
 ```
 
 ## Run
@@ -29,6 +29,16 @@ To check out database tests run:
 ```bash
 bun test
 ```
+
+## View database
+
+Run:
+
+```bash
+bun run view_db
+```
+
+And view the database at: https://local.drizzle.studio/
 
 ## Debug generated SQLs
 

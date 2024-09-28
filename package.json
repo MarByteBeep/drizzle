@@ -4,7 +4,8 @@
 	"type": "module",
 	"scripts": {
 		"debug_sql": "bun drizzle-kit generate",
-		"init": "bun drizzle-kit push"
+		"create_db": "bun drizzle-kit push",
+		"view_db": "bun drizzle-kit studio"
 	},
 	"devDependencies": {
 		"@libsql/client": "^0.14.0",
