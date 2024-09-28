@@ -105,9 +105,62 @@ describe('SELECT JSON', () => {
 		const result = db
 			.select()
 			.from(user)
-			.where(sql`json_extract(${user.json}, '$.seed') = 5678`)
+			.where(sql`json_extract(${user.json}, '$.seed') = 1234`)
 			.get();
 
-		expect(result?.id).toBe(2);
+		expect(result?.id).toBe(1);
+	});
+
+	test('query extra field', () => {
+		const result = db
+			.select()
+			.from(user)
+			.where(sql`json_extract(${user.json}, '$.user.extraA') = 'Extra field A'`)
+			.get();
+
+		expect(result?.json.seed).toBe(5678);
+
+		const json = result?.json as any; // Extra field not part of the schema, as can happen with partially implemented schemas
+		expect(json.user.extraA).toBe('Extra field A');
+	});
+
+	test('select json', () => {
+		const result = db
+			.select({ json: user.json })
+			.from(user)
+			.where(sql`json_extract(${user.json}, '$.user.extraA') = 'Extra field A'`)
+			.get();
+
+		expect(result?.json.seed).toBe(5678);
+	});
+
+	test('select json (arrows)', () => {
+		const result = db
+			.select({ json: user.json })
+			.from(user)
+			.where(sql`(${user.json}->>'$.user.extraA') = 'Extra field A'`)
+			.get();
+
+		expect(result?.json.seed).toBe(5678);
+	});
+
+	test('select and extract json', () => {
+		const result = db
+			.select({ extra: sql`json_extract(${user.json}, '$.user.extraA')` })
+			.from(user)
+			.where(sql`json_extract(${user.json}, '$.user.extraA') = 'Extra field A'`)
+			.get();
+
+		expect(result?.extra).toBe('Extra field A');
+	});
+
+	test('select and extract json (arrows)', () => {
+		const result = db
+			.select({ extra: sql`(${user.json}->>'$.user.extraA')` })
+			.from(user)
+			.where(sql`(${user.json}->>'$.user.extraA') NOT NULL`)
+			.get();
+
+		expect(result?.extra).toBe('Extra field A');
 	});
 });

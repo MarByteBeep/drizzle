@@ -16,7 +16,7 @@ export const user = sqliteTable(
 		id: integer('id').primaryKey({ autoIncrement: true }),
 		name: text('name').unique(),
 		phone: text('phone'),
-		json: text('json', { mode: 'json' }).$type<jsonSchema>(),
+		json: text('json', { mode: 'json' }).$type<jsonSchema>().notNull(),
 	},
 	(t) => {
 		return {
