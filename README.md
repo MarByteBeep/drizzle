@@ -1,4 +1,4 @@
-# Drizzle
+# Drizzle Boilerplate and Query examples
 
 ## Install
 
